@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ganimet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --yellow: #FFD400;
+    --yellow-dim: #B89A00;
+    --bg-dark: #0A0A0A;
+    --card-dark: #161616;
+    --border-dark: #2A2A2A;
+    --bg-light: #FAFAF7;
+    --card-light: #FFFFFF;
+    --border-light: #E4E1D6;
+    --text-secondary-dark: #8A8A85;
+    --text-secondary-light: #6B6B63;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--bg-dark);
+    color:var(--yellow);
+    min-height:100vh;
+    transition:background .35s ease, color .35s ease;
+  }
+  body.light{ background:var(--bg-light); }
+  body.light .card{ background:var(--card-light); border-color:var(--border-light); }
+  body.light .price-old{ color:var(--text-secondary-light); }
+  body.light .platform-tag{ background:#00000010; }
+  body.light header{ border-bottom-color:var(--border-light); }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px;
+    border-bottom:1px solid var(--border-dark);
+    position:sticky; top:0; z-index:20;
+    background:inherit;
+    backdrop-filter:blur(6px);
+  }
+  .logo-wrap{ display:flex; align-items:center; gap:10px; }
+  .logo-icon{
+    width:36px; height:36px;
+    animation: coinFlip 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 7px rgba(255,212,0,.5));
+    transform-style: preserve-3d;
+  }
+  @keyframes coinFlip{
+    0%, 100%{ transform: rotateY(0deg); }
+    45%{ transform: rotateY(360deg); }
+    55%{ transform: rotateY(360deg); }
+  }
+  .logo-text{
+    font-family:'Archivo Black', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 18px rgba(255,212,0,.35);
+    background: linear-gradient(100deg, var(--yellow-dim) 30%, #FFFBE0 46%, var(--yellow) 52%, var(--yellow-dim) 70%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3.2s ease-in-out infinite;
+  }
+  @keyframes shine{
+    0%{ background-position: 200% 0; }
+    45%, 100%{ background-position: -60% 0; }
+  }
+  .mode-toggle{
+    display:flex; align-items:center; gap:8px;
+    background:#00000030;
+    border:1px solid var(--border-dark);
+    border-radius:999px;
+    padding:6px 14px;
+    cursor:pointer;
+    color:var(--yellow);
+    font-size:13px;
+    font-weight:600;
+    transition:.2s;
+  }
+  body.light .mode-toggle{ background:#00000008; border-color:var(--border-light); }
+  .mode-toggle:hover{ border-color:var(--yellow); }
+
+  main{ padding: 28px; max-width:1200px; margin:0 auto; }
+  .page-title{
+    font-family:'Archivo Black', sans-serif;
+    font-size: clamp(22px, 4vw, 30px);
+    margin-bottom: 4px;
+  }
+  .page-sub{
+    color:var(--text-secondary-dark);
+    font-size:14px;
+    margin-bottom:24px;
+  }
+  body.light .page-sub{ color:var(--text-secondary-light); }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:16px;
+  }
+  @media (min-width:640px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width:900px){ .grid{ grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width:1180px){ .grid{ grid-template-columns: repeat(5, 1fr); } }
+
+  .card{
+    background:var(--card-dark);
+    border:1px solid var(--border-dark);
+    border-radius:10px;
+    overflow:hidden;
+    position:relative;
+    cursor:pointer;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .card:hover{ transform: translateY(-4px); border-color:var(--yellow); }
+  .card-img{
+    width:100%; aspect-ratio: 1/1;
+    background: linear-gradient(135deg,#2b2b2b,#151515);
+    display:flex; align-items:center; justify-content:center;
+    color:#555; font-size:12px;
+    position:relative;
+    overflow:hidden;
+  }
+  .discount-badge{
+    position:absolute; top:8px; left:8px;
+    background:var(--yellow); color:#111;
+    font-weight:800; font-size:12px;
+    padding:3px 8px; border-radius:5px;
+  }
+  .hover-info{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.78);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; font-size:12px; padding:10px;
+    opacity:0; transition:opacity .18s ease;
+  }
+  .card:hover .hover-info{ opacity:1; }
+  .card-body{ padding:10px 12px 14px; }
+  .game-name{
+    font-family:'Archivo Black', sans-serif;
+    font-size:14px;
+    color:var(--yellow);
+    margin-bottom:6px;
+    line-height:1.2;
+  }
+  .price-row{ display:flex; align-items:baseline; gap:8px; }
+  .price-old{ font-size:12px; color:var(--text-secondary-dark); text-decoration:line-through; }
+  .price-new{ font-size:15px; font-weight:800; color:#fff; }
+  body.light .price-new{ color:#111; }
+  .platform-tag{
+    display:inline-block; margin-top:8px;
+    font-size:10px; letter-spacing:.4px; text-transform:uppercase;
+    background:#ffffff10; padding:3px 7px; border-radius:4px;
+    color:var(--text-secondary-dark);
+  }
+  body.light .platform-tag{ color:var(--text-secondary-light); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <svg class="logo-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="coinGrad" cx="35%" cy="30%" r="75%">
+          <stop offset="0%" stop-color="#FFF6C4"/>
+          <stop offset="45%" stop-color="#FFD400"/>
+          <stop offset="100%" stop-color="#A87F00"/>
+        </radialGradient>
+      </defs>
+      <circle cx="32" cy="32" r="27" fill="url(#coinGrad)" stroke="#8A6A00" stroke-width="2"/>
+      <circle cx="32" cy="32" r="20" fill="none" stroke="#8A6A00" stroke-width="1.5" opacity=".6"/>
+      <path d="M32 20 L36 29 L46 30 L38.5 36.5 L41 46 L32 40.5 L23 46 L25.5 36.5 L18 30 L28 29 Z" fill="#8A6A00" opacity=".85"/>
+    </svg>
+    <span class="logo-text">GANİMET</span>
+  </div>
+  <div class="mode-toggle" id="modeToggle">☀️ / 🌙</div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+  const games = [
+    {name:"Shadow Runner", old:"₺899", price:"₺179", off:"-80%", platform:"Steam'de indirimde"},
+    {name:"Iron Fist Arena", old:"₺649", price:"₺129", off:"-80%", platform:"Epic Games'te indirimde"},
+    {name:"Nova Odyssey", old:"₺1199", price:"₺359", off:"-70%", platform:"GOG'da indirimde"},
+    {name:"Crimson Trail", old:"₺449", price:"₺89", off:"-80%", platform:"Xbox Store'da indirimde"},
+    {name:"Ashen Kingdoms", old:"₺999", price:"₺299", off:"-70%", platform:"PS Store'da indirimde"},
+    {name:"Velocity Drift", old:"₺349", price:"₺104", off:"-70%", platform:"Steam'de indirimde"},
+  ];
+
+  const grid = document.getElementById('grid');
+  games.forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-img">
+        <span class="discount-badge">${g.off}</span>
+        <div class="hover-info">${g.platform}</div>
+        oyun görseli
+      </div>
+      <div class="card-body">
+        <div class="game-name">${g.name}</div>
+        <div class="price-row">
+          <span class="price-old">${g.old}</span>
+          <span class="price-new">${g.price}</span>
+        </div>
+        <span class="platform-tag">${g.platform.split("'")[0]}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('modeToggle').addEventListener('click', ()=>{
+    document.body.classList.toggle('light');
+  });
+</script>
+
+</body>
+</html>
