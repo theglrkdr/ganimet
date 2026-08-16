@@ -1101,27 +1101,8 @@ function createSteamCurrencyBlock(
   }
 
 
-  let rateText =
-    '';
-
-
-  if(
-    Number.isFinite(usdTryRate)
-  ){
-
-    rateText =
-      `
-        <div class="rate-note">
-          1 USD = ${usdTryRate.toFixed(4)} TL
-        </div>
-      `;
-
-  }
-
-
   return `
     ${tryText}
-    ${rateText}
   `;
 
 }
