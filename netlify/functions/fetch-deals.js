@@ -82,5 +82,3 @@ export default async () => {
     console.error("Ganimet veri cekme hatasi:", err);
   }
 };
-
-
