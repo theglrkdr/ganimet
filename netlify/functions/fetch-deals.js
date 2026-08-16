@@ -10,7 +10,7 @@ async function fetchAllDeals(apiKey, country, shopIdsCsv) {
   const shopsQuery = shopIdsCsv;
 
   for (let page = 0; page < MAX_PAGES; page++) {
-    const url = `https://api.isthereanydeal.com/deals/v2?key=${apiKey}&country=${country}&limit=${PAGE_SIZE}&offset=${offset}&sort=-cut&${shopsQuery}`;
+    const url = `https://api.isthereanydeal.com/deals/v2?key=${apiKey}&country=${country}&limit=${PAGE_SIZE}&offset=${offset}&sort=-cut&shops=${shopsQuery}`;
     const res = await fetch(url);
     const data = await res.json();
     const list = data.list || [];
