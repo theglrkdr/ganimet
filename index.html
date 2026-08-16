@@ -10,560 +10,510 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --yellow: #FFD400;
-    --yellow-dim: #B89A00;
 
-    --bg-dark: #0A0A0A;
-    --card-dark: #161616;
-    --border-dark: #2A2A2A;
+:root{
+  --yellow:#FFD400;
+  --yellow-dim:#B89A00;
 
-    --bg-light: #FAFAF7;
-    --card-light: #FFFFFF;
-    --border-light: #E4E1D6;
+  --bg-dark:#0A0A0A;
+  --card-dark:#161616;
+  --border-dark:#2A2A2A;
 
-    --text-secondary-dark: #8A8A85;
-    --text-secondary-light: #6B6B63;
+  --bg-light:#FAFAF7;
+  --card-light:#FFFFFF;
+  --border-light:#E4E1D6;
+
+  --text-secondary-dark:#8A8A85;
+  --text-secondary-light:#6B6B63;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg-dark);
+  color:var(--yellow);
+  min-height:100vh;
+  transition:background .35s ease,color .35s ease;
+}
+
+body.light{
+  background:var(--bg-light);
+}
+
+body.light .card{
+  background:var(--card-light);
+  border-color:var(--border-light);
+}
+
+body.light .price-old{
+  color:var(--text-secondary-light);
+}
+
+body.light .platform-tag{
+  background:#00000010;
+}
+
+body.light header{
+  border-bottom-color:var(--border-light);
+}
+
+body.light .footer-note{
+  color:var(--text-secondary-light);
+}
+
+body.light .usd-note{
+  color:var(--text-secondary-light);
+}
+
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:18px 28px;
+
+  border-bottom:1px solid var(--border-dark);
+
+  position:sticky;
+  top:0;
+  z-index:20;
+
+  background:inherit;
+
+  backdrop-filter:blur(6px);
+}
+
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo-icon{
+  width:36px;
+  height:36px;
+
+  animation:coinFlip 3.2s ease-in-out infinite;
+
+  filter:drop-shadow(0 0 7px rgba(255,212,0,.5));
+
+  transform-style:preserve-3d;
+}
+
+@keyframes coinFlip{
+
+  0%,100%{
+    transform:rotateY(0deg);
   }
 
-  *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  45%{
+    transform:rotateY(360deg);
   }
 
-  body{
-    font-family:'Inter', sans-serif;
-    background:var(--bg-dark);
-    color:var(--yellow);
-    min-height:100vh;
-    transition:background .35s ease, color .35s ease;
+  55%{
+    transform:rotateY(360deg);
   }
 
-  body.light{
-    background:var(--bg-light);
+}
+
+.logo-text{
+
+  font-family:'Archivo Black',sans-serif;
+
+  font-size:26px;
+
+  font-weight:900;
+
+  letter-spacing:.5px;
+
+  text-shadow:0 0 18px rgba(255,212,0,.35);
+
+  background:
+    linear-gradient(
+      100deg,
+      var(--yellow-dim) 30%,
+      #FFFBE0 46%,
+      var(--yellow) 52%,
+      var(--yellow-dim) 70%
+    );
+
+  background-size:250% 100%;
+
+  -webkit-background-clip:text;
+  background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+  animation:shine 3.2s ease-in-out infinite;
+}
+
+@keyframes shine{
+
+  0%{
+    background-position:200% 0;
   }
 
-  body.light .card{
-    background:var(--card-light);
-    border-color:var(--border-light);
+  45%,100%{
+    background-position:-60% 0;
   }
 
-  body.light .price-old{
-    color:var(--text-secondary-light);
-  }
+}
 
-  body.light .platform-tag{
-    background:#00000010;
-  }
+.mode-toggle{
 
-  body.light header{
-    border-bottom-color:var(--border-light);
-  }
+  display:flex;
+  align-items:center;
+  gap:8px;
 
-  body.light .footer-note{
-    color:var(--text-secondary-light);
-  }
+  background:#00000030;
 
-  body.light .usd-note{
-    color:var(--text-secondary-light);
-  }
+  border:1px solid var(--border-dark);
 
-  /* HEADER */
+  border-radius:999px;
 
-  header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+  padding:6px 14px;
 
-    padding:18px 28px;
+  cursor:pointer;
 
-    border-bottom:1px solid var(--border-dark);
+  color:var(--yellow);
 
-    position:sticky;
-    top:0;
-    z-index:20;
+  font-size:13px;
 
-    background:inherit;
+  font-weight:600;
 
-    backdrop-filter:blur(6px);
-  }
+  transition:.2s;
+}
 
-  .logo-wrap{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
+body.light .mode-toggle{
+  background:#00000008;
+  border-color:var(--border-light);
+}
 
-  .logo-icon{
-    width:36px;
-    height:36px;
+.mode-toggle:hover{
+  border-color:var(--yellow);
+}
 
-    animation:coinFlip 3.2s ease-in-out infinite;
+main{
+  padding:28px;
+  max-width:1200px;
+  margin:0 auto;
+}
 
-    filter:drop-shadow(0 0 7px rgba(255,212,0,.5));
+.status-msg{
 
-    transform-style:preserve-3d;
-  }
+  text-align:center;
 
-  @keyframes coinFlip{
+  padding:40px 20px;
 
-    0%,100%{
-      transform:rotateY(0deg);
-    }
+  color:var(--text-secondary-dark);
 
-    45%{
-      transform:rotateY(360deg);
-    }
+  font-size:14px;
 
-    55%{
-      transform:rotateY(360deg);
-    }
+}
 
-  }
+body.light .status-msg{
+  color:var(--text-secondary-light);
+}
 
-  .logo-text{
+.grid{
 
-    font-family:'Archivo Black',sans-serif;
+  display:grid;
 
-    font-size:26px;
+  grid-template-columns:repeat(2,1fr);
 
-    font-weight:900;
+  gap:16px;
 
-    letter-spacing:.5px;
+}
 
-    text-shadow:0 0 18px rgba(255,212,0,.35);
-
-    background:
-      linear-gradient(
-        100deg,
-        var(--yellow-dim) 30%,
-        #FFFBE0 46%,
-        var(--yellow) 52%,
-        var(--yellow-dim) 70%
-      );
-
-    background-size:250% 100%;
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    -webkit-text-fill-color:transparent;
-
-    animation:shine 3.2s ease-in-out infinite;
-  }
-
-  @keyframes shine{
-
-    0%{
-      background-position:200% 0;
-    }
-
-    45%,100%{
-      background-position:-60% 0;
-    }
-
-  }
-
-  /* THEME BUTTON */
-
-  .mode-toggle{
-
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    background:#00000030;
-
-    border:1px solid var(--border-dark);
-
-    border-radius:999px;
-
-    padding:6px 14px;
-
-    cursor:pointer;
-
-    color:var(--yellow);
-
-    font-size:13px;
-
-    font-weight:600;
-
-    transition:.2s;
-  }
-
-  body.light .mode-toggle{
-
-    background:#00000008;
-
-    border-color:var(--border-light);
-
-  }
-
-  .mode-toggle:hover{
-
-    border-color:var(--yellow);
-
-  }
-
-  /* MAIN */
-
-  main{
-
-    padding:28px;
-
-    max-width:1200px;
-
-    margin:0 auto;
-
-  }
-
-  /* STATUS */
-
-  .status-msg{
-
-    text-align:center;
-
-    padding:40px 20px;
-
-    color:var(--text-secondary-dark);
-
-    font-size:14px;
-
-  }
-
-  body.light .status-msg{
-
-    color:var(--text-secondary-light);
-
-  }
-
-  /* GRID */
+@media (min-width:640px){
 
   .grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:16px;
-
+    grid-template-columns:repeat(3,1fr);
   }
 
-  @media (min-width:640px){
+}
 
-    .grid{
+@media (min-width:900px){
 
-      grid-template-columns:repeat(3,1fr);
-
-    }
-
+  .grid{
+    grid-template-columns:repeat(4,1fr);
   }
 
-  @media (min-width:900px){
+}
 
-    .grid{
+@media (min-width:1180px){
 
-      grid-template-columns:repeat(4,1fr);
-
-    }
-
+  .grid{
+    grid-template-columns:repeat(5,1fr);
   }
 
-  @media (min-width:1180px){
+}
 
-    .grid{
+.card{
 
-      grid-template-columns:repeat(5,1fr);
+  background:var(--card-dark);
 
-    }
+  border:1px solid var(--border-dark);
 
-  }
+  border-radius:10px;
 
-  /* CARD */
+  overflow:hidden;
 
-  .card{
+  position:relative;
 
-    background:var(--card-dark);
+  cursor:pointer;
 
-    border:1px solid var(--border-dark);
+  text-decoration:none;
 
-    border-radius:10px;
+  display:block;
 
-    overflow:hidden;
+  transition:
+    transform .18s ease,
+    border-color .18s ease;
 
-    position:relative;
+}
 
-    cursor:pointer;
+.card:hover{
 
-    text-decoration:none;
+  transform:translateY(-4px);
 
-    display:block;
+  border-color:var(--yellow);
 
-    transition:
-      transform .18s ease,
-      border-color .18s ease;
+}
 
-  }
+.card-img{
 
-  .card:hover{
+  width:100%;
 
-    transform:translateY(-4px);
+  aspect-ratio:1/1;
 
-    border-color:var(--yellow);
+  background:
+    linear-gradient(
+      135deg,
+      #2b2b2b,
+      #151515
+    );
 
-  }
+  display:flex;
 
-  /* IMAGE */
+  align-items:center;
 
-  .card-img{
+  justify-content:center;
 
-    width:100%;
+  color:#555;
 
-    aspect-ratio:1/1;
+  font-size:12px;
 
-    background:
-      linear-gradient(
-        135deg,
-        #2b2b2b,
-        #151515
-      );
+  position:relative;
 
-    display:flex;
+  overflow:hidden;
 
-    align-items:center;
+}
 
-    justify-content:center;
+.card-img img{
 
-    color:#555;
+  width:100%;
 
-    font-size:12px;
+  height:100%;
 
-    position:relative;
+  object-fit:cover;
 
-    overflow:hidden;
+  display:block;
 
-  }
+}
 
-  .card-img img{
+.discount-badge{
 
-    width:100%;
+  position:absolute;
 
-    height:100%;
+  top:8px;
 
-    object-fit:cover;
+  left:8px;
 
-    display:block;
+  background:var(--yellow);
 
-  }
+  color:#111;
 
-  /* DISCOUNT */
+  font-weight:800;
 
-  .discount-badge{
+  font-size:12px;
 
-    position:absolute;
+  padding:3px 8px;
 
-    top:8px;
+  border-radius:5px;
 
-    left:8px;
+  z-index:2;
 
-    background:var(--yellow);
+}
 
-    color:#111;
+.hover-info{
 
-    font-weight:800;
+  position:absolute;
 
-    font-size:12px;
+  inset:0;
 
-    padding:3px 8px;
+  background:rgba(0,0,0,.78);
 
-    border-radius:5px;
+  color:#fff;
 
-    z-index:2;
+  display:flex;
 
-  }
+  align-items:center;
 
-  /* HOVER */
+  justify-content:center;
 
-  .hover-info{
+  text-align:center;
 
-    position:absolute;
+  font-size:12px;
 
-    inset:0;
+  padding:10px;
 
-    background:rgba(0,0,0,.78);
+  opacity:0;
 
-    color:#fff;
+  transition:opacity .18s ease;
 
-    display:flex;
+  z-index:1;
 
-    align-items:center;
+}
 
-    justify-content:center;
+.card:hover .hover-info{
+  opacity:1;
+}
 
-    text-align:center;
+.card-body{
+  padding:10px 12px 14px;
+}
 
-    font-size:12px;
+.game-name{
 
-    padding:10px;
+  font-family:'Archivo Black',sans-serif;
 
-    opacity:0;
+  font-size:14px;
 
-    transition:opacity .18s ease;
+  color:var(--yellow);
 
-    z-index:1;
+  margin-bottom:6px;
 
-  }
+  line-height:1.2;
 
-  .card:hover .hover-info{
+}
 
-    opacity:1;
+.price-row{
 
-  }
+  display:flex;
 
-  /* CARD BODY */
+  align-items:baseline;
 
-  .card-body{
+  gap:8px;
 
-    padding:10px 12px 14px;
+  flex-wrap:wrap;
 
-  }
+}
 
-  .game-name{
+.price-old{
 
-    font-family:'Archivo Black',sans-serif;
+  font-size:12px;
 
-    font-size:14px;
+  color:var(--text-secondary-dark);
 
-    color:var(--yellow);
+  text-decoration:line-through;
 
-    margin-bottom:6px;
+}
 
-    line-height:1.2;
+.price-new{
 
-  }
+  font-size:15px;
 
-  .price-row{
+  font-weight:800;
 
-    display:flex;
+  color:#fff;
 
-    align-items:baseline;
+}
 
-    gap:8px;
+body.light .price-new{
+  color:#111;
+}
 
-    flex-wrap:wrap;
+.usd-note{
 
-  }
+  font-size:11px;
 
-  .price-old{
+  color:var(--text-secondary-dark);
 
-    font-size:12px;
+  margin-top:3px;
 
-    color:var(--text-secondary-dark);
+}
 
-    text-decoration:line-through;
+.platform-tag{
 
-  }
+  display:inline-block;
 
-  .price-new{
+  margin-top:8px;
 
-    font-size:15px;
+  font-size:10px;
 
-    font-weight:800;
+  letter-spacing:.4px;
 
-    color:#fff;
+  text-transform:uppercase;
 
-  }
+  background:#ffffff10;
 
-  body.light .price-new{
+  padding:3px 7px;
 
-    color:#111;
+  border-radius:4px;
 
-  }
+  color:var(--text-secondary-dark);
 
-  .usd-note{
+}
 
-    font-size:11px;
+body.light .platform-tag{
+  color:var(--text-secondary-light);
+}
 
-    color:var(--text-secondary-dark);
+.footer-note{
 
-    margin-top:3px;
+  text-align:center;
 
-  }
+  padding:30px 20px 10px;
 
-  .platform-tag{
+  font-size:11px;
 
-    display:inline-block;
+  color:var(--text-secondary-dark);
 
-    margin-top:8px;
+}
 
-    font-size:10px;
+.footer-note a{
+  color:inherit;
+}
 
-    letter-spacing:.4px;
+.error-msg{
 
-    text-transform:uppercase;
+  max-width:600px;
 
-    background:#ffffff10;
+  margin:30px auto;
 
-    padding:3px 7px;
+  padding:20px;
 
-    border-radius:4px;
+  border:1px solid #553333;
 
-    color:var(--text-secondary-dark);
+  background:#1a1010;
 
-  }
+  border-radius:10px;
 
-  body.light .platform-tag{
+  color:#ffb3b3;
 
-    color:var(--text-secondary-light);
+  text-align:center;
 
-  }
+  font-size:14px;
 
-  /* FOOTER */
+  line-height:1.6;
 
-  .footer-note{
-
-    text-align:center;
-
-    padding:30px 20px 10px;
-
-    font-size:11px;
-
-    color:var(--text-secondary-dark);
-
-  }
-
-  .footer-note a{
-
-    color:inherit;
-
-  }
-
-  /* ERROR */
-
-  .error-msg{
-
-    max-width:600px;
-
-    margin:30px auto;
-
-    padding:20px;
-
-    border:1px solid #553333;
-
-    background:#1a1010;
-
-    border-radius:10px;
-
-    color:#ffb3b3;
-
-    text-align:center;
-
-    font-size:14px;
-
-    line-height:1.6;
-
-  }
+}
 
 </style>
 </head>
@@ -685,401 +635,431 @@
 
 <script>
 
-  const grid =
-    document.getElementById('grid');
+const grid =
+  document.getElementById('grid');
 
-  const statusMsg =
-    document.getElementById('statusMsg');
+const statusMsg =
+  document.getElementById('statusMsg');
 
 
-  /*
-   * FİYAT FORMATLAMA
-   *
-   * API'den fiyatlar bazen string
-   * olarak gelebiliyor.
-   *
-   * Örneğin:
-   * "14.24"
-   *
-   * Number() ile sayıya çeviriyoruz.
-   */
+/*
+  Fiyatları güvenli şekilde sayıya çevir.
+*/
 
-  function formatPrice(amount, currency){
+function formatPrice(amount,currency){
 
-    const num = Number(amount);
+  const num = Number(amount);
 
-    if(!Number.isFinite(num)){
+  if(!Number.isFinite(num)){
+    return '-';
+  }
 
-      return '-';
+  if(num === 0){
+    return 'Ücretsiz';
+  }
+
+  return num.toFixed(2) + ' ' + (currency || '');
+
+}
+
+
+/*
+  İndirim oranını güvenli şekilde sayıya çevir.
+*/
+
+function formatDiscount(cut){
+
+  const num = Number(cut);
+
+  if(!Number.isFinite(num)){
+    return 0;
+  }
+
+  return Math.round(num);
+
+}
+
+
+/*
+  HTML güvenliği.
+*/
+
+function escapeHtml(value){
+
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
+}
+
+
+/*
+  API'den oyunları getir.
+*/
+
+async function loadGames(){
+
+  try{
+
+    const res =
+      await fetch(
+        '/api/deals',
+        {
+          cache:'no-store'
+        }
+      );
+
+    if(!res.ok){
+
+      throw new Error(
+        'API isteği başarısız: ' + res.status
+      );
 
     }
 
-    if(num === 0){
+    const data =
+      await res.json();
 
-      return 'Ücretsiz';
-
-    }
-
-    return (
-      num.toFixed(2)
-      + ' '
-      + (currency || '')
+    console.log(
+      'Ganimet API verisi:',
+      data
     );
 
-  }
+    return data.games || [];
 
+  }catch(error){
 
-  /*
-   * İndirim yüzdesini güvenli şekilde
-   * sayıya çeviriyoruz.
-   */
+    console.error(
+      'Ganimet veri hatası:',
+      error
+    );
 
-  function formatDiscount(cut){
-
-    const num = Number(cut);
-
-    if(!Number.isFinite(num)){
-
-      return 0;
-
-    }
-
-    return Math.round(num);
+    return null;
 
   }
 
+}
 
-  /*
-   * API'DEN OYUNLARI ÇEK
-   */
 
-  async function loadGames(){
+/*
+  Oyun kartını oluştur.
+*/
 
-    try{
+function createGameCard(game){
 
-      const res =
-        await fetch(
-          '/api/deals',
-          {
-            cache:'no-store'
-          }
-        );
+  const card =
+    document.createElement('a');
 
-      if(!res.ok){
+  card.className =
+    'card';
 
-        throw new Error(
-          'API isteği başarısız: '
-          + res.status
-        );
+  card.href =
+    game.url || '#';
+
+  card.target =
+    '_blank';
+
+  card.rel =
+    'noopener noreferrer';
+
+
+  const discount =
+    formatDiscount(game.cut);
+
+
+  let imageHtml = '';
+
+
+  if(game.image){
+
+    imageHtml = `
+      <img
+        src="${game.image}"
+        alt="${escapeHtml(game.name || 'Oyun')}"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+    `;
+
+  }else{
+
+    imageHtml = `
+      <span>
+        Görsel yok
+      </span>
+    `;
+
+  }
+
+
+  let usdBlock = '';
+
+
+  if(
+    Number(game.shopId) === 61 &&
+    game.usdPrice !== undefined &&
+    game.usdPrice !== null
+  ){
+
+    const usd =
+      Number(game.usdPrice);
+
+    const equivalent =
+      Number(game.usdToTryEquivalent);
+
+
+    if(Number.isFinite(usd)){
+
+      let equivalentText = '';
+
+
+      if(Number.isFinite(equivalent)){
+
+        equivalentText =
+          ` ≈ ${equivalent.toFixed(2)} TL`;
 
       }
 
-      const data =
-        await res.json();
 
-      console.log(
-        'Ganimet API verisi:',
-        data
-      );
-
-      return data.games || [];
-
-    }catch(error){
-
-      console.error(
-        'Ganimet veri hatası:',
-        error
-      );
-
-      return null;
+      usdBlock = `
+        <div class="usd-note">
+          $${usd.toFixed(2)}${equivalentText}
+        </div>
+      `;
 
     }
 
   }
 
 
-  /*
-   * OYUN KARTI OLUŞTUR
-   */
+  card.innerHTML = `
 
-  function createGameCard(g){
+    <div class="card-img">
 
-    const card =
-      document.createElement('a');
+      <span class="discount-badge">
+        -${discount}%
+      </span>
 
-    card.className =
-      'card';
+      <div class="hover-info">
+        ${escapeHtml(game.shop || 'Mağaza')}
+        'da indirimde
+      </div>
 
-    card.href =
-      g.url || '#';
+      ${imageHtml}
 
-    card.target =
-      '_blank';
-
-    card.rel =
-      'noopener noreferrer';
+    </div>
 
 
-    const discount =
-      formatDiscount(g.cut);
+    <div class="card-body">
+
+      <div class="game-name">
+        ${escapeHtml(game.name || 'İsimsiz oyun')}
+      </div>
 
 
-    /*
-     * Görsel yoksa boş kutu gösteriyoruz.
-     */
+      <div class="price-row">
 
-    const imageHtml =
-      g.image
-        ? `
-          <img
-            src="${g.image}"
-            alt="${escapeHtml(g.name || 'Oyun')}"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        `
-        : `
-          <span>
-            Görsel yok
-          </span>
-        `;
-
-
-    /*
-     * USD bilgisi varsa göster.
-     */
-
-    let usdBlock = '';
-
-
-    if(
-      g.shopId === 61 &&
-      g.usdPrice !== undefined &&
-      g.usdPrice !== null
-    ){
-
-      const usd =
-        Number(g.usdPrice);
-
-      const equivalent =
-        Number(g.usdToTryEquivalent);
-
-
-      if(Number.isFinite(usd)){
-
-        let equivalentText = '';
-
-
-        if(
-          Number.isFinite(equivalent)
-        ){
-
-          equivalentText =
-            ` ≈ ${equivalent.toFixed(2)} TL`;
-        }
-
-
-        usdBlock = `
-          <div class="usd-note">
-            $${usd.toFixed(2)}${equivalentText}
-          </div>
-        `;
-
-      }
-
-    }
-
-
-    card.innerHTML = `
-
-      <div class="card-img">
-
-        <span class="discount-badge">
-          -${discount}%
+        <span class="price-old">
+          ${formatPrice(
+            game.oldPrice,
+            game.currency
+          )}
         </span>
 
-        <div class="hover-info">
-          ${escapeHtml(g.shop || 'Mağaza')}
-          'da indirimde
-        </div>
-
-        ${imageHtml}
+        <span class="price-new">
+          ${formatPrice(
+            game.price,
+            game.currency
+          )}
+        </span>
 
       </div>
 
 
-      <div class="card-body">
-
-        <div class="game-name">
-          ${escapeHtml(g.name || 'İsimsiz oyun')}
-        </div>
+      ${usdBlock}
 
 
-        <div class="price-row">
+      <span class="platform-tag">
+        ${escapeHtml(game.shop || 'Mağaza')}
+      </span>
 
-          <span class="price-old">
-            ${formatPrice(
-              g.oldPrice,
-              g.currency
-            )}
-          </span>
+    </div>
 
-          <span class="price-new">
-            ${formatPrice(
-              g.price,
-              g.currency
-            )}
-          </span>
-
-        </div>
+  `;
 
 
-        ${usdBlock}
+  return card;
+
+}
 
 
-        <span class="platform-tag">
-          ${escapeHtml(g.shop || 'Mağaza')}
-        </span>
+/*
+  ANA SİSTEM
+*/
+
+async function initialize(){
+
+  let games =
+    await loadGames();
+
+
+  /*
+    API bağlantısı başarısız.
+  */
+
+  if(games === null){
+
+    statusMsg.innerHTML = `
+
+      <div class="error-msg">
+
+        <strong>
+          Veriler yüklenemedi.
+        </strong>
+
+        <br><br>
+
+        API bağlantısında bir sorun oluştu.
+        Birkaç saniye sonra tekrar deneyebilirsin.
 
       </div>
 
     `;
 
-
-    return card;
-
-  }
-
-
-  /*
-   * HTML güvenliği
-   *
-   * Oyun isminde özel karakter varsa
-   * sayfanın HTML yapısını bozmasını önler.
-   */
-
-  function escapeHtml(value){
-
-    return String(value ?? '')
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;')
-      .replace(/'/g,'&#039;');
+    return;
 
   }
 
 
   /*
-   * SAYFAYI YÜKLE
-   */
+    %0 indirimleri kaldır.
+  */
 
-  async function initialize(){
+  games =
+    games.filter(game => {
 
-    const games =
-      await loadGames();
+      const discount =
+        Number(game.cut);
 
-
-    /*
-     * API tamamen başarısız
-     */
-
-    if(games === null){
-
-      statusMsg.innerHTML = `
-        <div class="error-msg">
-
-          <strong>
-            Veriler yüklenemedi.
-          </strong>
-
-          <br><br>
-
-          API bağlantısında bir sorun oluştu.
-          Birkaç saniye sonra tekrar deneyebilirsin.
-
-        </div>
-      `;
-
-      return;
-
-    }
-
-
-    /*
-     * API çalışıyor ama veri yok
-     */
-
-    if(games.length === 0){
-
-      statusMsg.textContent =
-        'Henüz veri yok — otomatik güncelleme birazdan çalışacak.';
-
-      return;
-
-    }
-
-
-    /*
-     * Oyunlar geldi.
-     */
-
-    statusMsg.style.display =
-      'none';
-
-
-    /*
-     * Önce temizle
-     */
-
-    grid.innerHTML =
-      '';
-
-
-    /*
-     * Kartları oluştur
-     */
-
-    games.forEach(game => {
-
-      const card =
-        createGameCard(game);
-
-      grid.appendChild(card);
+      return (
+        Number.isFinite(discount) &&
+        discount > 0
+      );
 
     });
 
 
-    console.log(
-      `Ganimet: ${games.length} oyun gösteriliyor.`
-    );
+  /*
+    Aynı oyunun tekrarlarını kaldır.
+  */
+
+  const seenIds =
+    new Set();
+
+
+  games =
+    games.filter(game => {
+
+      /*
+        Öncelikle ID kullanıyoruz.
+      */
+
+      const id =
+        String(game.id ?? '');
+
+
+      if(id && seenIds.has(id)){
+        return false;
+      }
+
+
+      if(id){
+        seenIds.add(id);
+      }
+
+
+      return true;
+
+    });
+
+
+  /*
+    Hiç oyun kalmadıysa.
+  */
+
+  if(games.length === 0){
+
+    statusMsg.textContent =
+      'Şu anda gösterilecek indirim bulunamadı.';
+
+    return;
 
   }
 
 
   /*
-   * BAŞLAT
-   */
+    Yükleniyor yazısını kaldır.
+  */
 
-  initialize();
+  statusMsg.style.display =
+    'none';
 
 
   /*
-   * DARK / LIGHT MODE
-   */
+    Eski kartları temizle.
+  */
 
-  document
-    .getElementById('modeToggle')
-    .addEventListener(
-      'click',
-      () => {
+  grid.innerHTML =
+    '';
 
-        document.body.classList.toggle(
-          'light'
-        );
 
-      }
-    );
+  /*
+    Oyunları oluştur.
+  */
+
+  games.forEach(game => {
+
+    const card =
+      createGameCard(game);
+
+    grid.appendChild(card);
+
+  });
+
+
+  console.log(
+    `Ganimet: ${games.length} indirim gösteriliyor.`
+  );
+
+}
+
+
+/*
+  Sayfayı başlat.
+*/
+
+initialize();
+
+
+/*
+  DARK / LIGHT MODE
+*/
+
+document
+  .getElementById('modeToggle')
+  .addEventListener(
+    'click',
+    () => {
+
+      document.body.classList.toggle(
+        'light'
+      );
+
+    }
+  );
 
 </script>
 
