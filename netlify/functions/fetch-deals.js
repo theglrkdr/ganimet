@@ -7,7 +7,7 @@ const MAX_PAGES = 3; // guvenlik siniri (en fazla ~600 oyun)
 async function fetchAllDeals(apiKey, country, shopIdsCsv) {
   let all = [];
   let offset = 0;
-  const shopsQuery = shopIdsCsv.split(",").map(s => `shops=${s}`).join("&");
+  const shopsQuery = shopIdsCsv;
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const url = `https://api.isthereanydeal.com/deals/v2?key=${apiKey}&country=${country}&limit=${PAGE_SIZE}&offset=${offset}&sort=-cut&${shopsQuery}`;
