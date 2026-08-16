@@ -33,6 +33,7 @@
   body.light .platform-tag{ background:#00000010; }
   body.light header{ border-bottom-color:var(--border-light); }
   body.light .footer-note{ color:var(--text-secondary-light); }
+  body.light .usd-note{ color:var(--text-secondary-light); }
 
   header{
     display:flex; align-items:center; justify-content:space-between;
@@ -151,10 +152,14 @@
     margin-bottom:6px;
     line-height:1.2;
   }
-  .price-row{ display:flex; align-items:baseline; gap:8px; }
+  .price-row{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
   .price-old{ font-size:12px; color:var(--text-secondary-dark); text-decoration:line-through; }
   .price-new{ font-size:15px; font-weight:800; color:#fff; }
   body.light .price-new{ color:#111; }
+  .usd-note{
+    font-size:11px; color:var(--text-secondary-dark);
+    margin-top:3px;
+  }
   .platform-tag{
     display:inline-block; margin-top:8px;
     font-size:10px; letter-spacing:.4px; text-transform:uppercase;
@@ -241,6 +246,12 @@
       card.href = g.url || '#';
       card.target = '_blank';
       card.rel = 'noopener';
+
+      let usdBlock = '';
+      if (g.shopId === 61 && g.usdPrice !== undefined) {
+        usdBlock = `<div class="usd-note">$${g.usdPrice.toFixed(2)} ≈ ${g.usdToTryEquivalent ? g.usdToTryEquivalent.toFixed(2) + ' TL (guncel kur)' : ''}</div>`;
+      }
+
       card.innerHTML = `
         <div class="card-img">
           <span class="discount-badge">-${g.cut}%</span>
@@ -253,6 +264,7 @@
             <span class="price-old">${formatPrice(g.oldPrice, g.currency)}</span>
             <span class="price-new">${formatPrice(g.price, g.currency)}</span>
           </div>
+          ${usdBlock}
           <span class="platform-tag">${g.shop}</span>
         </div>
       `;
