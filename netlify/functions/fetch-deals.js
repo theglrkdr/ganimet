@@ -1,64 +1,130 @@
 import { getStore } from "@netlify/blobs";
 
-const SHOPS = "61,16,35,48,62"; // Steam, Epic, GOG, Microsoft/Xbox, Ubisoft
-const PAGE_SIZE = 200;
-const MAX_PAGES = 3; // guvenlik siniri (en fazla ~600 oyun)
+async function fetchSteamDeals() {
+  const url =
+    "https://store.steampowered.com/search/?specials=1&filter=topsellers&cc=tr&l=turkish";
 
-async function fetchAllDeals(apiKey, country, shopIdsCsv) {
-  let all = [];
-  let offset = 0;
-  const shopsQuery = shopIdsCsv;
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36",
+    },
+  });
 
-  for (let page = 0; page < MAX_PAGES; page++) {
-    const url = `https://api.isthereanydeal.com/deals/v2?key=${apiKey}&country=${country}&limit=${PAGE_SIZE}&offset=${offset}&sort=-cut&shops=${shopsQuery}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const list = data.list || [];
-    all = all.concat(list);
-    if (list.length < PAGE_SIZE) break;
-    offset += PAGE_SIZE;
+  if (!res.ok) {
+    throw new Error(`Steam HTTP ${res.status}`);
   }
-  return all;
+
+  const html = await res.text();
+
+  const games = [];
+
+  // Steam arama sonuçlarındaki oyun satırlarını bul
+  const regex =
+    /<a[^>]+class="search_result_row[^"]*"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
+
+  let match;
+
+  while ((match = regex.exec(html)) !== null && games.length < 100) {
+    const url = match[1];
+    const block = match[2];
+
+    // Oyun adı
+    const nameMatch = block.match(
+      /<span[^>]+class="title"[^>]*>([\s\S]*?)<\/span>/
+    );
+
+    if (!nameMatch) continue;
+
+    const name = cleanHtml(nameMatch[1]);
+
+    // İndirim yüzdesi
+    const discountMatch = block.match(
+      /<div[^>]+class="discount_pct"[^>]*>([\s\S]*?)<\/div>/
+    );
+
+    // Normal fiyat
+    const originalPriceMatch = block.match(
+      /<div[^>]+class="discount_original_price"[^>]*>([\s\S]*?)<\/div>/
+    );
+
+    // İndirimli fiyat
+    const finalPriceMatch = block.match(
+      /<div[^>]+class="discount_final_price"[^>]*>([\s\S]*?)<\/div>/
+    );
+
+    // Resim
+    const imageMatch = block.match(
+      /<img[^>]+src="([^"]+)"/
+    );
+
+    const discount = discountMatch
+      ? parseInt(cleanHtml(discountMatch[1]).replace("-", ""), 10)
+      : 0;
+
+    const oldPrice = originalPriceMatch
+      ? cleanHtml(originalPriceMatch[1])
+      : "";
+
+    const price = finalPriceMatch
+      ? cleanHtml(finalPriceMatch[1])
+      : "";
+
+    const image = imageMatch ? imageMatch[1] : "";
+
+    games.push({
+      id: `steam-${games.length}-${encodeURIComponent(name)}`,
+      name,
+      image,
+      price,
+      oldPrice,
+      cut: discount,
+      shop: "Steam",
+      shopId: 61,
+      currency: "TRY",
+      url,
+    });
+  }
+
+  return games;
+}
+
+function cleanHtml(value) {
+  return value
+    .replace(/<[^>]*>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export default async () => {
-  const apiKey = process.env.ITAD_API_KEY;
-
   try {
-    const tryDeals = await fetchAllDeals(apiKey, "TR", SHOPS);
+    console.log("Ganimet: Steam indirimleri çekiliyor...");
 
-    let usdToTry = null;
-    try {
-      const fxRes = await fetch("https://api.frankfurter.app/latest?from=USD&to=TRY");
-      const fxData = await fxRes.json();
-      usdToTry = fxData.rates && fxData.rates.TRY;
-    } catch (e) {
-      console.error("Kur bilgisi alinamadi:", e);
-    }
-
-    const games = tryDeals.map(item => ({
-      id: item.id,
-      name: item.title,
-      image: (item.assets && (item.assets.banner600 || item.assets.banner400 || item.assets.boxart)) || "",
-      price: item.deal.price.amount,
-      currency: item.deal.price.currency,
-      oldPrice: item.deal.regular.amount,
-      cut: item.deal.cut,
-      shop: item.deal.shop.name,
-      shopId: item.deal.shop.id,
-      url: item.deal.url,
-    }));
+    const games = await fetchSteamDeals();
 
     const store = getStore("ganimet-deals");
+
     await store.setJSON("latest", {
       updatedAt: new Date().toISOString(),
-      usdToTry,
+      source: "Steam",
       games,
     });
 
-    console.log(`Ganimet: ${games.length} indirim guncellendi`);
+    console.log(
+      `Ganimet: ${games.length} Steam indirimi kaydedildi`
+    );
   } catch (err) {
-    console.error("Ganimet veri cekme hatasi:", err);
+    console.error(
+      "Ganimet Steam veri çekme hatası:",
+      err
+    );
+
+    throw err;
   }
 };
 
