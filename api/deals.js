@@ -25,19 +25,6 @@ function cleanPrice(text = "") {
 
   if (!value) return 0;
 
-  /*
-    Steam Türkiye fiyatları bazen:
-
-    1.039,00
-    39,99
-    999,00
-
-    şeklinde gelir.
-
-    Nokta binlik ayırıcı,
-    virgül ondalık ayırıcı olarak kabul edilir.
-  */
-
   if (value.includes(",") && value.includes(".")) {
     value = value
       .replace(/\./g, "")
@@ -51,11 +38,10 @@ function cleanPrice(text = "") {
   return Number.isFinite(number) ? number : 0;
 }
 
-function extractFirstImage(row) {
+function extractImage(row) {
   const patterns = [
     /data-src="([^"]+)"/i,
-    /src="([^"]+)"/i,
-    /data-capsule-micro="([^"]+)"/i
+    /src="([^"]+)"/i
   ];
 
   for (const pattern of patterns) {
@@ -73,77 +59,39 @@ function parseSteamGames(html) {
   const games = [];
   const seen = new Set();
 
-  /*
-    Steam arama sayfasındaki ürün satırları.
-  */
-
   const rows =
     html.match(
       /<a[^>]*class="[^"]*search_result_row[^"]*"[\s\S]*?<\/a>/gi
     ) || [];
 
   for (const row of rows) {
-    /*
-      APP ID
-    */
-
     const appIdMatch =
       row.match(/data-ds-appid="([^"]+)"/i);
-
-    if (!appIdMatch) {
-      continue;
-    }
-
-    /*
-      Bazı Steam sonuçlarında data-ds-appid
-      birden fazla ID içerebilir.
-
-      İlk ID'yi kullanıyoruz.
-    */
-
-    const id = appIdMatch[1]
-      .split(",")[0]
-      .trim();
-
-    if (!/^\d+$/.test(id)) {
-      continue;
-    }
-
-    if (seen.has(id)) {
-      continue;
-    }
-
-    /*
-      OYUN ADI
-    */
 
     const nameMatch =
       row.match(
         /<span[^>]*class="[^"]*title[^"]*"[^>]*>([\s\S]*?)<\/span>/i
       );
 
-    if (!nameMatch) {
-      continue;
-    }
-
-    const name = cleanText(nameMatch[1]);
-
-    if (!name) {
-      continue;
-    }
-
-    /*
-      İNDİRİM
-    */
-
     const discountMatch =
       row.match(
         /<div[^>]*class="[^"]*discount_pct[^"]*"[^>]*>[\s\S]*?-?(\d+)%[\s\S]*?<\/div>/i
       );
 
-    if (!discountMatch) {
+    if (!appIdMatch || !nameMatch || !discountMatch) {
       continue;
     }
+
+    const id = appIdMatch[1]
+      .split(",")[0]
+      .trim();
+
+    if (!/^\d+$/.test(id)) continue;
+    if (seen.has(id)) continue;
+
+    const name = cleanText(nameMatch[1]);
+
+    if (!name) continue;
 
     const cut =
       Number.parseInt(
@@ -151,26 +99,12 @@ function parseSteamGames(html) {
         10
       ) || 0;
 
-    /*
-      SADECE GERÇEK İNDİRİMLER
-    */
-
-    if (cut <= 0) {
-      continue;
-    }
-
-    /*
-      ESKİ FİYAT
-    */
+    if (cut <= 0) continue;
 
     const oldPriceMatch =
       row.match(
         /<div[^>]*class="[^"]*discount_original_price[^"]*"[^>]*>([\s\S]*?)<\/div>/i
       );
-
-    /*
-      YENİ FİYAT
-    */
 
     const finalPriceMatch =
       row.match(
@@ -178,34 +112,12 @@ function parseSteamGames(html) {
       );
 
     const oldPrice =
-      cleanPrice(
-        oldPriceMatch?.[1] || ""
-      );
+      cleanPrice(oldPriceMatch?.[1]);
 
     const price =
-      cleanPrice(
-        finalPriceMatch?.[1] || ""
-      );
+      cleanPrice(finalPriceMatch?.[1]);
 
-    /*
-      Fiyat yoksa ürünü alma.
-    */
-
-    if (price <= 0) {
-      continue;
-    }
-
-    /*
-      GÖRSEL
-    */
-
-    const image =
-      extractFirstImage(row);
-
-    /*
-      DLC / soundtrack / wallpaper vb.
-      mümkün olduğunca temizliyoruz.
-    */
+    if (price <= 0) continue;
 
     const lowerName =
       name.toLowerCase();
@@ -219,34 +131,34 @@ function parseSteamGames(html) {
       "art book",
       "strategy guide",
       "digital artbook",
-      "dedicated server",
-      "soundtrack dlc"
+      "dedicated server"
     ];
 
-    const excluded =
-      excludedWords.some(
-        (word) =>
-          lowerName.includes(word)
-      );
-
-    if (excluded) {
+    if (
+      excludedWords.some(word =>
+        lowerName.includes(word)
+      )
+    ) {
       continue;
     }
 
-    /*
-      SONUÇ
-    */
+    seen.add(id);
 
     games.push({
       id,
       name,
-      image,
+      image: extractImage(row),
+
+      // Steam'in gerçek fiyatı USD
       price,
       oldPrice,
-      currency: "TRY",
+      currency: "USD",
+
       cut,
+
       shop: "Steam",
       shopId: 61,
+
       url:
         `https://store.steampowered.com/app/${id}/`
     });
@@ -257,14 +169,6 @@ function parseSteamGames(html) {
 
 export default async function handler(req, res) {
   try {
-    /*
-      SAYFA
-
-      /api/deals?page=0
-      /api/deals?page=1
-      /api/deals?page=2
-    */
-
     const page =
       Math.max(
         0,
@@ -274,30 +178,8 @@ export default async function handler(req, res) {
         ) || 0
       );
 
-    /*
-      Her sayfada 100 oyun.
-    */
-
     const count = 100;
-
-    const start =
-      page * count;
-
-    /*
-      Steam normal arama sayfası.
-
-      specials=1
-        Sadece indirimli ürünler
-
-      category1=998
-        Oyunlar
-
-      cc=tr
-        Türkiye mağazası
-
-      l=turkish
-        Türkçe
-    */
+    const start = page * count;
 
     const steamUrl =
       "https://store.steampowered.com/search/" +
@@ -308,111 +190,132 @@ export default async function handler(req, res) {
       "&cc=tr" +
       "&l=turkish";
 
-    console.log(
-      "Steam URL:",
-      steamUrl
-    );
+    const steamResponse =
+      await fetch(steamUrl, {
+        method: "GET",
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151.0 Safari/537.36",
 
-    /*
-      STEAM'DEN SAYFAYI ÇEK
-    */
+          "Accept":
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 
-    const response =
-      await fetch(
-        steamUrl,
-        {
-          method: "GET",
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0 Safari/537.36",
+          "Accept-Language":
+            "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
 
-            "Accept":
-              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-
-            "Accept-Language":
-              "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-
-            "Referer":
-              "https://store.steampowered.com/"
-          }
+          "Referer":
+            "https://store.steampowered.com/"
         }
-      );
+      });
 
-    console.log(
-      "Steam HTTP:",
-      response.status
-    );
-
-    if (!response.ok) {
+    if (!steamResponse.ok) {
       throw new Error(
-        `Steam HTTP ${response.status}`
+        `Steam HTTP ${steamResponse.status}`
       );
     }
 
-    /*
-      HTML AL
-    */
-
     const html =
-      await response.text();
+      await steamResponse.text();
 
     if (!html || html.length < 1000) {
       throw new Error(
-        "Steam boş veya geçersiz HTML döndürdü"
+        "Steam boş veya geçersiz cevap verdi"
       );
     }
-
-    /*
-      OYUNLARI AYRIŞTIR
-    */
 
     const games =
       parseSteamGames(html);
 
-    console.log(
-      `Steam oyun sayısı: ${games.length}`
-    );
-
-    /*
-      Eğer Steam HTML döndürdü ama
-      hiçbir oyun bulamadıysak hata ver.
-    */
-
     if (games.length === 0) {
       throw new Error(
-        "Steam sayfası geldi fakat indirimli oyun bulunamadı"
+        "Steam'den indirimli oyun bulunamadı"
       );
     }
 
-    /*
-      JSON CEVABI
-    */
+    // Güncel USD → TRY kuru
+    let usdToTry = null;
+
+    try {
+      const fxResponse =
+        await fetch(
+          "https://api.frankfurter.app/latest?from=USD&to=TRY"
+        );
+
+      if (fxResponse.ok) {
+        const fxData =
+          await fxResponse.json();
+
+        usdToTry =
+          Number(fxData?.rates?.TRY) || null;
+      }
+    } catch (fxError) {
+      console.error(
+        "Kur alınamadı:",
+        fxError
+      );
+    }
+
+    // TL karşılığını hesapla
+    const finalGames =
+      games.map(game => ({
+        ...game,
+
+        usdToTry,
+
+        priceTry:
+          usdToTry
+            ? Number(
+                (game.price * usdToTry)
+                  .toFixed(2)
+              )
+            : null,
+
+        oldPriceTry:
+          usdToTry
+            ? Number(
+                (game.oldPrice * usdToTry)
+                  .toFixed(2)
+              )
+            : null
+      }));
 
     return res.status(200).json({
       source: "Steam",
+
+      currency: "USD",
+
+      usdToTry,
+
       page,
-      count: games.length,
+
+      count:
+        finalGames.length,
+
       nextPage:
-        games.length >= count
+        finalGames.length >= count
           ? page + 1
           : null,
+
       updatedAt:
         new Date().toISOString(),
-      games
+
+      games: finalGames
     });
 
   } catch (error) {
     console.error(
-      "STEAM API HATASI:",
+      "Steam API hatası:",
       error?.stack || error
     );
 
     return res.status(500).json({
       error:
         "Steam verileri alınamadı",
+
       message:
         error?.message ||
         "Bilinmeyen hata",
+
       games: []
     });
   }
