@@ -31,3 +31,6 @@ export default async () => {
     console.error("Ganimet veri cekme hatasi:", err);
   }
 };
+export const config = {
+  schedule: "0 */6 * * *",
+};
