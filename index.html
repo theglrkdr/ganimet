@@ -7,7 +7,10 @@
 <title>Ganimet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
 
 <style>
 
@@ -38,7 +41,9 @@ body{
   background:var(--bg-dark);
   color:var(--yellow);
   min-height:100vh;
-  transition:background .35s ease,color .35s ease;
+  transition:
+    background .35s ease,
+    color .35s ease;
 }
 
 body.light{
@@ -56,6 +61,7 @@ body.light .price-old{
 
 body.light .platform-tag{
   background:#00000010;
+  color:var(--text-secondary-light);
 }
 
 body.light header{
@@ -66,9 +72,18 @@ body.light .footer-note{
   color:var(--text-secondary-light);
 }
 
-body.light .usd-note{
+body.light .currency-note{
   color:var(--text-secondary-light);
 }
+
+body.light .status-msg{
+  color:var(--text-secondary-light);
+}
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
   display:flex;
@@ -98,9 +113,13 @@ header{
   width:36px;
   height:36px;
 
-  animation:coinFlip 3.2s ease-in-out infinite;
+  animation:
+    coinFlip 3.2s ease-in-out infinite;
 
-  filter:drop-shadow(0 0 7px rgba(255,212,0,.5));
+  filter:
+    drop-shadow(
+      0 0 7px rgba(255,212,0,.5)
+    );
 
   transform-style:preserve-3d;
 }
@@ -122,16 +141,15 @@ header{
 }
 
 .logo-text{
-
   font-family:'Archivo Black',sans-serif;
 
   font-size:26px;
-
   font-weight:900;
 
   letter-spacing:.5px;
 
-  text-shadow:0 0 18px rgba(255,212,0,.35);
+  text-shadow:
+    0 0 18px rgba(255,212,0,.35);
 
   background:
     linear-gradient(
@@ -149,7 +167,8 @@ header{
 
   -webkit-text-fill-color:transparent;
 
-  animation:shine 3.2s ease-in-out infinite;
+  animation:
+    shine 3.2s ease-in-out infinite;
 }
 
 @keyframes shine{
@@ -165,7 +184,6 @@ header{
 }
 
 .mode-toggle{
-
   display:flex;
   align-items:center;
   gap:8px;
@@ -183,7 +201,6 @@ header{
   color:var(--yellow);
 
   font-size:13px;
-
   font-weight:600;
 
   transition:.2s;
@@ -198,6 +215,11 @@ body.light .mode-toggle{
   border-color:var(--yellow);
 }
 
+
+/* =========================
+   MAIN
+========================= */
+
 main{
   padding:28px;
   max-width:1200px;
@@ -205,7 +227,6 @@ main{
 }
 
 .status-msg{
-
   text-align:center;
 
   padding:40px 20px;
@@ -213,27 +234,22 @@ main{
   color:var(--text-secondary-dark);
 
   font-size:14px;
-
-}
-
-body.light .status-msg{
-  color:var(--text-secondary-light);
 }
 
 .grid{
-
   display:grid;
 
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:
+    repeat(2,1fr);
 
   gap:16px;
-
 }
 
 @media (min-width:640px){
 
   .grid{
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+      repeat(3,1fr);
   }
 
 }
@@ -241,7 +257,8 @@ body.light .status-msg{
 @media (min-width:900px){
 
   .grid{
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+      repeat(4,1fr);
   }
 
 }
@@ -249,13 +266,18 @@ body.light .status-msg{
 @media (min-width:1180px){
 
   .grid{
-    grid-template-columns:repeat(5,1fr);
+    grid-template-columns:
+      repeat(5,1fr);
   }
 
 }
 
-.card{
 
+/* =========================
+   CARD
+========================= */
+
+.card{
   background:var(--card-dark);
 
   border:1px solid var(--border-dark);
@@ -275,19 +297,14 @@ body.light .status-msg{
   transition:
     transform .18s ease,
     border-color .18s ease;
-
 }
 
 .card:hover{
-
   transform:translateY(-4px);
-
   border-color:var(--yellow);
-
 }
 
 .card-img{
-
   width:100%;
 
   aspect-ratio:1/1;
@@ -302,7 +319,6 @@ body.light .status-msg{
   display:flex;
 
   align-items:center;
-
   justify-content:center;
 
   color:#555;
@@ -312,27 +328,21 @@ body.light .status-msg{
   position:relative;
 
   overflow:hidden;
-
 }
 
 .card-img img{
-
   width:100%;
-
   height:100%;
 
   object-fit:cover;
 
   display:block;
-
 }
 
 .discount-badge{
-
   position:absolute;
 
   top:8px;
-
   left:8px;
 
   background:var(--yellow);
@@ -348,11 +358,9 @@ body.light .status-msg{
   border-radius:5px;
 
   z-index:2;
-
 }
 
 .hover-info{
-
   position:absolute;
 
   inset:0;
@@ -364,7 +372,6 @@ body.light .status-msg{
   display:flex;
 
   align-items:center;
-
   justify-content:center;
 
   text-align:center;
@@ -375,10 +382,10 @@ body.light .status-msg{
 
   opacity:0;
 
-  transition:opacity .18s ease;
+  transition:
+    opacity .18s ease;
 
   z-index:1;
-
 }
 
 .card:hover .hover-info{
@@ -390,21 +397,18 @@ body.light .status-msg{
 }
 
 .game-name{
-
   font-family:'Archivo Black',sans-serif;
 
   font-size:14px;
 
   color:var(--yellow);
 
-  margin-bottom:6px;
+  margin-bottom:7px;
 
   line-height:1.2;
-
 }
 
 .price-row{
-
   display:flex;
 
   align-items:baseline;
@@ -412,45 +416,69 @@ body.light .status-msg{
   gap:8px;
 
   flex-wrap:wrap;
-
 }
 
 .price-old{
-
   font-size:12px;
 
   color:var(--text-secondary-dark);
 
   text-decoration:line-through;
-
 }
 
 .price-new{
-
   font-size:15px;
 
   font-weight:800;
 
   color:#fff;
-
 }
 
 body.light .price-new{
   color:#111;
 }
 
-.usd-note{
+
+/* =========================
+   STEAM USD / TRY
+========================= */
+
+.currency-note{
+  margin-top:4px;
 
   font-size:11px;
 
+  line-height:1.4;
+
   color:var(--text-secondary-dark);
-
-  margin-top:3px;
-
 }
 
-.platform-tag{
+.currency-note .try{
+  color:var(--yellow);
 
+  font-weight:700;
+}
+
+body.light .currency-note .try{
+  color:#8a7100;
+}
+
+.rate-note{
+  margin-top:2px;
+
+  font-size:9px;
+
+  color:var(--text-secondary-dark);
+
+  opacity:.75;
+}
+
+
+/* =========================
+   PLATFORM
+========================= */
+
+.platform-tag{
   display:inline-block;
 
   margin-top:8px;
@@ -468,15 +496,14 @@ body.light .price-new{
   border-radius:4px;
 
   color:var(--text-secondary-dark);
-
 }
 
-body.light .platform-tag{
-  color:var(--text-secondary-light);
-}
+
+/* =========================
+   FOOTER
+========================= */
 
 .footer-note{
-
   text-align:center;
 
   padding:30px 20px 10px;
@@ -484,15 +511,14 @@ body.light .platform-tag{
   font-size:11px;
 
   color:var(--text-secondary-dark);
-
 }
 
-.footer-note a{
-  color:inherit;
-}
+
+/* =========================
+   ERROR
+========================= */
 
 .error-msg{
-
   max-width:600px;
 
   margin:30px auto;
@@ -512,13 +538,14 @@ body.light .platform-tag{
   font-size:14px;
 
   line-height:1.6;
-
 }
 
 </style>
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -558,6 +585,7 @@ body.light .platform-tag{
 
       </defs>
 
+
       <circle
         cx="32"
         cy="32"
@@ -566,6 +594,7 @@ body.light .platform-tag{
         stroke="#8A6A00"
         stroke-width="2"
       />
+
 
       <circle
         cx="32"
@@ -577,6 +606,7 @@ body.light .platform-tag{
         opacity=".6"
       />
 
+
       <path
         d="M32 20 L36 29 L46 30 L38.5 36.5 L41 46 L32 40.5 L23 46 L25.5 36.5 L18 30 L28 29 Z"
         fill="#8A6A00"
@@ -585,11 +615,13 @@ body.light .platform-tag{
 
     </svg>
 
+
     <span class="logo-text">
       GANİMET
     </span>
 
   </div>
+
 
   <div
     class="mode-toggle"
@@ -601,6 +633,7 @@ body.light .platform-tag{
 </header>
 
 
+
 <main>
 
   <div
@@ -610,6 +643,7 @@ body.light .platform-tag{
     İndirimler yükleniyor...
   </div>
 
+
   <div
     class="grid"
     id="grid"
@@ -618,22 +652,22 @@ body.light .platform-tag{
 </main>
 
 
+
 <div class="footer-note">
 
-  Fiyat verileri
-  <a
-    href="https://isthereanydeal.com"
-    target="_blank"
-    rel="noopener"
-  >
-    IsThereAnyDeal
-  </a>
-  üzerinden sağlanmaktadır.
+  Steam fiyatları USD olarak alınır.
+  TL karşılığı güncel USD/TRY kuru ile hesaplanır.
 
 </div>
 
 
+
 <script>
+
+
+/* =====================================================
+   ELEMENTLER
+===================================================== */
 
 const grid =
   document.getElementById('grid');
@@ -642,100 +676,90 @@ const statusMsg =
   document.getElementById('statusMsg');
 
 
-/*
-  Fiyatları güvenli şekilde sayıya çevir.
-*/
+/* =====================================================
+   USD / TRY KURU
+===================================================== */
 
-function formatPrice(amount,currency){
-
-  const num = Number(amount);
-
-  if(!Number.isFinite(num)){
-    return '-';
-  }
-
-  if(num === 0){
-    return 'Ücretsiz';
-  }
-
-  return num.toFixed(2) + ' ' + (currency || '');
-
-}
+let usdTryRate = null;
 
 
 /*
-  İndirim oranını güvenli şekilde sayıya çevir.
+  Kur bilgisini kendi API'mizden alıyoruz.
+
+  Burada kur yazmıyoruz.
+
+  Sistem:
+  /api/exchange-rate
+
+  endpoint'ine gider ve
+  rate değerini kullanır.
 */
 
-function formatDiscount(cut){
-
-  const num = Number(cut);
-
-  if(!Number.isFinite(num)){
-    return 0;
-  }
-
-  return Math.round(num);
-
-}
-
-
-/*
-  HTML güvenliği.
-*/
-
-function escapeHtml(value){
-
-  return String(value ?? '')
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
-
-}
-
-
-/*
-  API'den oyunları getir.
-*/
-
-async function loadGames(){
+async function loadExchangeRate(){
 
   try{
 
-    const res =
+    const response =
       await fetch(
-        '/api/deals',
+        '/api/exchange-rate',
         {
           cache:'no-store'
         }
       );
 
-    if(!res.ok){
+
+    if(!response.ok){
 
       throw new Error(
-        'API isteği başarısız: ' + res.status
+        'Kur API HTTP ' +
+        response.status
       );
 
     }
 
+
     const data =
-      await res.json();
+      await response.json();
+
+
+    const rate =
+      Number(data?.rate);
+
+
+    if(
+      !Number.isFinite(rate) ||
+      rate <= 0
+    ){
+
+      throw new Error(
+        'Geçersiz USD/TRY kuru'
+      );
+
+    }
+
+
+    usdTryRate = rate;
+
 
     console.log(
-      'Ganimet API verisi:',
-      data
+      'Ganimet USD/TRY kuru:',
+      usdTryRate
     );
 
-    return data.games || [];
+
+    return usdTryRate;
+
 
   }catch(error){
 
     console.error(
-      'Ganimet veri hatası:',
+      'USD/TRY kur hatası:',
       error
     );
+
+
+    usdTryRate = null;
+
 
     return null;
 
@@ -744,151 +768,721 @@ async function loadGames(){
 }
 
 
-/*
-  Oyun kartını oluştur.
-*/
+/* =====================================================
+   FİYAT FORMAT
+===================================================== */
 
-function createGameCard(game){
+function formatNumber(value){
 
-  const card =
-    document.createElement('a');
-
-  card.className =
-    'card';
-
-  card.href =
-    game.url || '#';
-
-  card.target =
-    '_blank';
-
-  card.rel =
-    'noopener noreferrer';
+  const num =
+    Number(value);
 
 
-  const discount =
-    formatDiscount(game.cut);
+  if(!Number.isFinite(num)){
 
-
-  let imageHtml = '';
-
-
-  if(game.image){
-
-    imageHtml = `
-      <img
-        src="${game.image}"
-        alt="${escapeHtml(game.name || 'Oyun')}"
-        loading="lazy"
-        onerror="this.style.display='none'"
-      >
-    `;
-
-  }else{
-
-    imageHtml = `
-      <span>
-        Görsel yok
-      </span>
-    `;
+    return '-';
 
   }
 
 
-  let usdBlock = '';
+  if(num === 0){
 
+    return 'Ücretsiz';
+
+  }
+
+
+  return num.toFixed(2);
+
+}
+
+
+/*
+  Normal mağazalar için fiyat.
+
+  Örneğin:
+
+  149.99 TRY
+*/
+
+function formatPrice(
+  amount,
+  currency
+){
+
+  const num =
+    Number(amount);
+
+
+  if(!Number.isFinite(num)){
+
+    return '-';
+
+  }
+
+
+  if(num === 0){
+
+    return 'Ücretsiz';
+
+  }
+
+
+  return (
+    num.toFixed(2) +
+    ' ' +
+    (currency || '')
+  );
+
+}
+
+
+/* =====================================================
+   STEAM KONTROL
+===================================================== */
+
+function isSteamGame(game){
+
+  /*
+    Steam'in mevcut shopId'si:
+    61
+
+    Öncelikle bunu kullanıyoruz.
+  */
 
   if(
-    Number(game.shopId) === 61 &&
-    game.usdPrice !== undefined &&
-    game.usdPrice !== null
+    Number(game?.shopId) === 61
+  ){
+
+    return true;
+
+  }
+
+
+  /*
+    Güvenlik için shop adına da bakıyoruz.
+  */
+
+  const shop =
+    String(
+      game?.shop ||
+      ''
+    ).toLowerCase();
+
+
+  return shop === 'steam';
+
+}
+
+
+/* =====================================================
+   STEAM USD FİYATI
+===================================================== */
+
+function getSteamUsdPrice(game){
+
+  /*
+    Eğer backend zaten usdPrice
+    gönderiyorsa onu kullan.
+  */
+
+  if(
+    game?.usdPrice !== undefined &&
+    game?.usdPrice !== null
   ){
 
     const usd =
       Number(game.usdPrice);
 
-    const equivalent =
-      Number(game.usdToTryEquivalent);
 
+    if(
+      Number.isFinite(usd)
+    ){
 
-    if(Number.isFinite(usd)){
-
-      let equivalentText = '';
-
-
-      if(Number.isFinite(equivalent)){
-
-        equivalentText =
-          ` ≈ ${equivalent.toFixed(2)} TL`;
-
-      }
-
-
-      usdBlock = `
-        <div class="usd-note">
-          $${usd.toFixed(2)}${equivalentText}
-        </div>
-      `;
+      return usd;
 
     }
 
   }
 
 
-  card.innerHTML = `
+  /*
+    Yoksa game.price USD ise
+    game.price değerini kullan.
+  */
 
-    <div class="card-img">
-
-      <span class="discount-badge">
-        -${discount}%
-      </span>
-
-      <div class="hover-info">
-        ${escapeHtml(game.shop || 'Mağaza')}
-        'da indirimde
-      </div>
-
-      ${imageHtml}
-
-    </div>
+  const currency =
+    String(
+      game?.currency ||
+      ''
+    ).toUpperCase();
 
 
-    <div class="card-body">
+  if(
+    currency === 'USD'
+  ){
 
-      <div class="game-name">
-        ${escapeHtml(game.name || 'İsimsiz oyun')}
-      </div>
+    const usd =
+      Number(game.price);
 
 
-      <div class="price-row">
+    if(
+      Number.isFinite(usd)
+    ){
 
+      return usd;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =====================================================
+   HTML GÜVENLİĞİ
+===================================================== */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ''
+  )
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+    .replace(
+      /</g,
+      '&lt;'
+    )
+    .replace(
+      />/g,
+      '&gt;'
+    )
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
+}
+
+
+/* =====================================================
+   İNDİRİM
+===================================================== */
+
+function formatDiscount(cut){
+
+  const num =
+    Number(cut);
+
+
+  if(
+    !Number.isFinite(num)
+  ){
+
+    return 0;
+
+  }
+
+
+  return Math.round(num);
+
+}
+
+
+/* =====================================================
+   STEAM KUR KARŞILIĞI
+===================================================== */
+
+function calculateTry(
+  usd
+){
+
+  const price =
+    Number(usd);
+
+
+  if(
+    !Number.isFinite(price)
+  ){
+
+    return null;
+
+  }
+
+
+  if(
+    !Number.isFinite(usdTryRate)
+  ){
+
+    return null;
+
+  }
+
+
+  return (
+    price *
+    usdTryRate
+  );
+
+}
+
+
+/* =====================================================
+   STEAM KUR NOTU
+===================================================== */
+
+function createSteamCurrencyBlock(
+  game
+){
+
+  if(
+    !isSteamGame(game)
+  ){
+
+    return '';
+
+  }
+
+
+  const usd =
+    getSteamUsdPrice(game);
+
+
+  if(
+    !Number.isFinite(usd)
+  ){
+
+    return '';
+
+  }
+
+
+  const tryPrice =
+    calculateTry(usd);
+
+
+  let tryText =
+    '';
+
+
+  if(
+    Number.isFinite(tryPrice)
+  ){
+
+    tryText =
+      `
+        <div class="currency-note">
+          ≈
+          <span class="try">
+            ${tryPrice.toFixed(2)} TL
+          </span>
+        </div>
+      `;
+
+  }else{
+
+    tryText =
+      `
+        <div class="currency-note">
+          TL karşılığı alınamadı
+        </div>
+      `;
+
+  }
+
+
+  let rateText =
+    '';
+
+
+  if(
+    Number.isFinite(usdTryRate)
+  ){
+
+    rateText =
+      `
+        <div class="rate-note">
+          1 USD = ${usdTryRate.toFixed(4)} TL
+        </div>
+      `;
+
+  }
+
+
+  return `
+    ${tryText}
+    ${rateText}
+  `;
+
+}
+
+
+/* =====================================================
+   OYUNLARI API'DEN AL
+===================================================== */
+
+async function loadGames(){
+
+  try{
+
+    const response =
+      await fetch(
+        '/api/deals',
+        {
+          cache:'no-store'
+        }
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        'API isteği başarısız: ' +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      'Ganimet API verisi:',
+      data
+    );
+
+
+    return (
+      Array.isArray(data?.games)
+        ? data.games
+        : []
+    );
+
+
+  }catch(error){
+
+    console.error(
+      'Ganimet veri hatası:',
+      error
+    );
+
+
+    return null;
+
+  }
+
+}
+
+
+/* =====================================================
+   OYUN KARTI
+===================================================== */
+
+function createGameCard(game){
+
+  const card =
+    document.createElement('a');
+
+
+  card.className =
+    'card';
+
+
+  card.href =
+    game.url || '#';
+
+
+  card.target =
+    '_blank';
+
+
+  card.rel =
+    'noopener noreferrer';
+
+
+  const discount =
+    formatDiscount(
+      game.cut
+    );
+
+
+  /*
+    GÖRSEL
+  */
+
+  let imageHtml =
+    '';
+
+
+  if(game.image){
+
+    imageHtml =
+      `
+        <img
+          src="${escapeHtml(game.image)}"
+          alt="${escapeHtml(
+            game.name ||
+            'Oyun'
+          )}"
+          loading="lazy"
+          onerror="
+            this.style.display='none'
+          "
+        >
+      `;
+
+  }else{
+
+    imageHtml =
+      `
+        <span>
+          Görsel yok
+        </span>
+      `;
+
+  }
+
+
+  /*
+    STEAM Mİ?
+  */
+
+  const steam =
+    isSteamGame(game);
+
+
+  /*
+    FİYATLAR
+  */
+
+  let oldPriceHtml =
+    '';
+
+  let newPriceHtml =
+    '';
+
+  let steamCurrencyHtml =
+    '';
+
+
+  if(steam){
+
+    /*
+      STEAM:
+
+      USD gösteriyoruz.
+
+      Örnek:
+
+      49.99 USD
+      7.49 USD
+
+      Altında:
+
+      ≈ 273.XX TL
+    */
+
+    const usdCurrent =
+      getSteamUsdPrice(game);
+
+
+    let usdOld =
+      null;
+
+
+    /*
+      Backend'de usdOldPrice varsa kullan.
+    */
+
+    if(
+      game?.usdOldPrice !== undefined &&
+      game?.usdOldPrice !== null
+    ){
+
+      usdOld =
+        Number(
+          game.usdOldPrice
+        );
+
+    }
+
+
+    /*
+      Yoksa oldPrice USD kabul edilebilir.
+    */
+
+    if(
+      !Number.isFinite(usdOld)
+    ){
+
+      const currency =
+        String(
+          game?.currency ||
+          ''
+        ).toUpperCase();
+
+
+      if(
+        currency === 'USD'
+      ){
+
+        usdOld =
+          Number(
+            game.oldPrice
+          );
+
+      }
+
+    }
+
+
+    if(
+      Number.isFinite(usdOld)
+    ){
+
+      oldPriceHtml =
+        `
+          <span class="price-old">
+            ${usdOld.toFixed(2)} USD
+          </span>
+        `;
+
+    }
+
+
+    if(
+      Number.isFinite(usdCurrent)
+    ){
+
+      newPriceHtml =
+        `
+          <span class="price-new">
+            ${usdCurrent.toFixed(2)} USD
+          </span>
+        `;
+
+    }else{
+
+      newPriceHtml =
+        `
+          <span class="price-new">
+            -
+          </span>
+        `;
+
+    }
+
+
+    steamCurrencyHtml =
+      createSteamCurrencyBlock(
+        game
+      );
+
+  }else{
+
+    /*
+      DİĞER MAĞAZALAR:
+
+      Mevcut sistem ne gönderiyorsa
+      aynen onu göster.
+
+      Steam dışına dokunmuyoruz.
+    */
+
+    oldPriceHtml =
+      `
         <span class="price-old">
           ${formatPrice(
             game.oldPrice,
             game.currency
           )}
         </span>
+      `;
 
+
+    newPriceHtml =
+      `
         <span class="price-new">
           ${formatPrice(
             game.price,
             game.currency
           )}
         </span>
+      `;
+
+  }
+
+
+  /*
+    KART HTML
+  */
+
+  card.innerHTML =
+    `
+      <div class="card-img">
+
+        <span class="discount-badge">
+          -${discount}%
+        </span>
+
+
+        <div class="hover-info">
+          ${escapeHtml(
+            game.shop ||
+            'Mağaza'
+          )}
+          'da indirimde
+        </div>
+
+
+        ${imageHtml}
 
       </div>
 
 
-      ${usdBlock}
+      <div class="card-body">
+
+        <div class="game-name">
+          ${escapeHtml(
+            game.name ||
+            'İsimsiz oyun'
+          )}
+        </div>
 
 
-      <span class="platform-tag">
-        ${escapeHtml(game.shop || 'Mağaza')}
-      </span>
+        <div class="price-row">
 
-    </div>
+          ${oldPriceHtml}
 
-  `;
+          ${newPriceHtml}
+
+        </div>
+
+
+        ${steamCurrencyHtml}
+
+
+        <span class="platform-tag">
+          ${escapeHtml(
+            game.shop ||
+            'Mağaza'
+          )}
+        </span>
+
+      </div>
+    `;
 
 
   return card;
@@ -896,38 +1490,74 @@ function createGameCard(game){
 }
 
 
-/*
-  ANA SİSTEM
-*/
+/* =====================================================
+   ANA SİSTEM
+===================================================== */
 
 async function initialize(){
 
-  let games =
-    await loadGames();
+  /*
+    Önce iki veriyi aynı anda istiyoruz:
+
+    1. Oyunlar
+    2. USD/TRY kuru
+  */
+
+  const [
+    games,
+    exchangeRate
+  ] =
+    await Promise.all([
+      loadGames(),
+      loadExchangeRate()
+    ]);
 
 
   /*
-    API bağlantısı başarısız.
+    Kur gelmediyse Steam yine çalışır.
+
+    Sadece TL karşılığı yerine
+    "TL karşılığı alınamadı" yazar.
+
+    Diğer mağazalar normal çalışmaya
+    devam eder.
   */
 
-  if(games === null){
+  if(
+    exchangeRate === null
+  ){
 
-    statusMsg.innerHTML = `
+    console.warn(
+      'USD/TRY kuru alınamadı. Steam TL karşılığı gösterilemeyecek.'
+    );
 
-      <div class="error-msg">
+  }
 
-        <strong>
-          Veriler yüklenemedi.
-        </strong>
 
-        <br><br>
+  /*
+    API tamamen başarısız.
+  */
 
-        API bağlantısında bir sorun oluştu.
-        Birkaç saniye sonra tekrar deneyebilirsin.
+  if(
+    games === null
+  ){
 
-      </div>
+    statusMsg.innerHTML =
+      `
+        <div class="error-msg">
 
-    `;
+          <strong>
+            Veriler yüklenemedi.
+          </strong>
+
+          <br>
+          <br>
+
+          API bağlantısında bir sorun oluştu.
+          Birkaç saniye sonra tekrar deneyebilirsin.
+
+        </div>
+      `;
 
     return;
 
@@ -935,62 +1565,75 @@ async function initialize(){
 
 
   /*
-    %0 indirimleri kaldır.
+    Sadece indirimli oyunlar.
   */
 
-  games =
-    games.filter(game => {
+  let filteredGames =
+    games.filter(
+      game => {
 
-      const discount =
-        Number(game.cut);
+        const discount =
+          Number(game.cut);
 
-      return (
-        Number.isFinite(discount) &&
-        discount > 0
-      );
 
-    });
+        return (
+          Number.isFinite(discount) &&
+          discount > 0
+        );
+
+      }
+    );
 
 
   /*
-    Aynı oyunun tekrarlarını kaldır.
+    Aynı oyunu tekrar gösterme.
   */
 
   const seenIds =
     new Set();
 
 
-  games =
-    games.filter(game => {
+  filteredGames =
+    filteredGames.filter(
+      game => {
 
-      /*
-        Öncelikle ID kullanıyoruz.
-      */
+        const id =
+          String(
+            game.id ??
+            ''
+          );
 
-      const id =
-        String(game.id ?? '');
+
+        if(
+          id &&
+          seenIds.has(id)
+        ){
+
+          return false;
+
+        }
 
 
-      if(id && seenIds.has(id)){
-        return false;
+        if(id){
+
+          seenIds.add(id);
+
+        }
+
+
+        return true;
+
       }
-
-
-      if(id){
-        seenIds.add(id);
-      }
-
-
-      return true;
-
-    });
+    );
 
 
   /*
-    Hiç oyun kalmadıysa.
+    Hiç oyun yok.
   */
 
-  if(games.length === 0){
+  if(
+    filteredGames.length === 0
+  ){
 
     statusMsg.textContent =
       'Şu anda gösterilecek indirim bulunamadı.';
@@ -1001,7 +1644,7 @@ async function initialize(){
 
 
   /*
-    Yükleniyor yazısını kaldır.
+    Yükleniyor mesajını kaldır.
   */
 
   statusMsg.style.display =
@@ -1017,39 +1660,45 @@ async function initialize(){
 
 
   /*
-    Oyunları oluştur.
+    Kartları oluştur.
   */
 
-  games.forEach(game => {
+  filteredGames.forEach(
+    game => {
 
-    const card =
-      createGameCard(game);
+      const card =
+        createGameCard(game);
 
-    grid.appendChild(card);
 
-  });
+      grid.appendChild(
+        card
+      );
+
+    }
+  );
 
 
   console.log(
-    `Ganimet: ${games.length} indirim gösteriliyor.`
+    `Ganimet: ${filteredGames.length} indirim gösteriliyor.`
+  );
+
+
+  console.log(
+    'Kullanılan USD/TRY kuru:',
+    usdTryRate
   );
 
 }
 
 
-/*
-  Sayfayı başlat.
-*/
-
-initialize();
-
-
-/*
-  DARK / LIGHT MODE
-*/
+/* =====================================================
+   DARK / LIGHT MODE
+===================================================== */
 
 document
-  .getElementById('modeToggle')
+  .getElementById(
+    'modeToggle'
+  )
   .addEventListener(
     'click',
     () => {
@@ -1061,7 +1710,15 @@ document
     }
   );
 
+
+/* =====================================================
+   BAŞLAT
+===================================================== */
+
+initialize();
+
 </script>
+
 
 </body>
 </html>
