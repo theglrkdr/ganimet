@@ -2,7 +2,7 @@ import { getStore } from "@netlify/blobs";
 
 const SHOPS = "61,16,35,48,62"; // Steam, Epic, GOG, Microsoft/Xbox, Ubisoft
 const PAGE_SIZE = 200;
-const MAX_PAGES = 10; // guvenlik siniri (en fazla ~2000 oyun)
+const MAX_PAGES = 3; // guvenlik siniri (en fazla ~600 oyun)
 
 async function fetchAllDeals(apiKey, country, shopIdsCsv) {
   let all = [];
@@ -26,15 +26,6 @@ export default async () => {
 
   try {
     const tryDeals = await fetchAllDeals(apiKey, "TR", SHOPS);
-    const usdSteamDeals = await fetchAllDeals(apiKey, "US", "61");
-
-    const usdMap = {};
-    usdSteamDeals.forEach(item => {
-      usdMap[item.id] = {
-        usdPrice: item.deal.price.amount,
-        usdOldPrice: item.deal.regular.amount,
-      };
-    });
 
     let usdToTry = null;
     try {
@@ -45,30 +36,18 @@ export default async () => {
       console.error("Kur bilgisi alinamadi:", e);
     }
 
-    const games = tryDeals.map(item => {
-      const base = {
-        id: item.id,
-        name: item.title,
-        image: (item.assets && (item.assets.banner600 || item.assets.banner400 || item.assets.boxart)) || "",
-        price: item.deal.price.amount,
-        currency: item.deal.price.currency,
-        oldPrice: item.deal.regular.amount,
-        cut: item.deal.cut,
-        shop: item.deal.shop.name,
-        shopId: item.deal.shop.id,
-        url: item.deal.url,
-      };
-
-      if (item.deal.shop.id === 61 && usdMap[item.id]) {
-        base.usdPrice = usdMap[item.id].usdPrice;
-        base.usdOldPrice = usdMap[item.id].usdOldPrice;
-        if (usdToTry) {
-          base.usdToTryEquivalent = Math.round(usdMap[item.id].usdPrice * usdToTry * 100) / 100;
-        }
-      }
-
-      return base;
-    });
+    const games = tryDeals.map(item => ({
+      id: item.id,
+      name: item.title,
+      image: (item.assets && (item.assets.banner600 || item.assets.banner400 || item.assets.boxart)) || "",
+      price: item.deal.price.amount,
+      currency: item.deal.price.currency,
+      oldPrice: item.deal.regular.amount,
+      cut: item.deal.cut,
+      shop: item.deal.shop.name,
+      shopId: item.deal.shop.id,
+      url: item.deal.url,
+    }));
 
     const store = getStore("ganimet-deals");
     await store.setJSON("latest", {
@@ -81,4 +60,8 @@ export default async () => {
   } catch (err) {
     console.error("Ganimet veri cekme hatasi:", err);
   }
+};
+
+export const config = {
+  schedule: "0 */6 * * *",
 };
